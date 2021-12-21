@@ -1,0 +1,44 @@
+import requests
+import streamlit as st
+from moviepy.editor import *
+from pydub import AudioSegment
+from textblob import TextBlob
+
+st.title("Speech to Text")
+st.write()
+
+subscription_key = 'be934929aaa74b068f1aa6ec0e32e3f8'
+url = "https://centralindia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=en-US"
+
+headers = {
+    'Content-type': 'audio/wav;codec="audio/pcm";',
+    'Ocp-Apim-Subscription-Key': 'be934929aaa74b068f1aa6ec0e32e3f8',
+}
+
+st.write("uploading file")
+uploaded_file = st.file_uploader("Choose an audio...")
+
+if uploaded_file is not None:
+    print("type(uploaded_file) --> ", type(uploaded_file))
+    with open("sample.mp4", "wb") as f:
+        f.write(uploaded_file.getbuffer())
+        video = VideoFileClip("sample.mp4")
+        st.write("converting to mp3")
+        video.audio.write_audiofile("sample.mp3")
+        st.write("converting to wav")
+        sound = AudioSegment.from_mp3("sample.mp3")
+        sound.export("sample.wav", format="wav")
+
+    with open("sample.wav", 'rb') as payload:
+        st.write("Processing audio")
+        response = requests.request("POST", url, headers=headers, data=payload)
+        st.write("Speech To Text Result")
+        long_text = response.text.split('DisplayText":')[
+            1].split(',"Offset')[0]
+        st.write("Speech To Text Result")
+        st.write(long_text)
+
+        blob_ = TextBlob(long_text)
+        output = blob_.translate(to='en')
+        st.write("Translation Result")
+        st.write(output)
