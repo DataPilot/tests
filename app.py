@@ -1,6 +1,7 @@
 import requests
 import streamlit as st
 from moviepy.editor import *
+from moviepy.video.VideoClip import VideoClip
 from pydub import AudioSegment
 from textblob import TextBlob
 
@@ -38,6 +39,7 @@ if uploaded_file is not None:
         st.write("Speech To Text Result")
         st.write(long_text)
 
+        st.write("Translating to english")
         blob_ = TextBlob(long_text)
         output = blob_.translate(to='en')
         st.write("Translation Result")
