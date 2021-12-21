@@ -8,7 +8,7 @@ st.title("Speech to Text")
 st.write()
 
 subscription_key = 'be934929aaa74b068f1aa6ec0e32e3f8'
-url = "https://centralindia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=en-US"
+url = "https://centralindia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=hi-IN"
 
 headers = {
     'Content-type': 'audio/wav;codec="audio/pcm";',
