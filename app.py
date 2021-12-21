@@ -36,7 +36,7 @@ if uploaded_file is not None:
         st.subheader("Speech To Text Result")
         st.write(long_text)
 
-        st.header("Translating to english")
+        st.header("Translating to Urdu")
         blob_ = TextBlob(long_text)
         output = blob_.translate(to='ur')
         st.subheader("Translation Result")
