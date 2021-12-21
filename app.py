@@ -17,6 +17,7 @@ headers = {
 }
 
 uploaded_file = st.file_uploader("Choose an mp4 video file...")
+st.success("Upload Successful!")
 st.header("Processing Video")
 if uploaded_file is not None:
     with open("sample.mp4", "wb") as f:
@@ -26,18 +27,21 @@ if uploaded_file is not None:
         video.audio.write_audiofile("sample.mp3")
         sound = AudioSegment.from_mp3("sample.mp3")
         sound.export("sample.wav", format="wav")
-        st.write("Format conversion successful!")
+        # st.success("Format conversion successful!")
 
     with open("sample.wav", 'rb') as payload:
-        st.header("Processing Audio")
-        response = requests.request("POST", url, headers=headers, data=payload)
-        long_text = response.text.split('DisplayText":')[
-            1].split(',"Offset')[0]
-        st.subheader("Speech To Text Result")
-        st.write(long_text)
+        with st.spinner("Processing Audio"):
+            response = requests.request(
+                "POST", url, headers=headers, data=payload)
+            long_text = response.text.split('DisplayText":')[
+                1].split(',"Offset')[0]
+            st.subheader("Speech To Text Result")
+            st.write(long_text)
 
-        st.header("Translating to Urdu")
-        blob_ = TextBlob(long_text)
-        output = blob_.translate(to='ur')
-        st.subheader("Translation Result")
-        st.write(output)
+            st.header("Translating to Urdu")
+            blob_ = TextBlob(long_text)
+            output = blob_.translate(to='ur')
+            # st.success("Translation successful!")
+            st.subheader("Translation Result")
+            # st.success()
+            st.write(output)
