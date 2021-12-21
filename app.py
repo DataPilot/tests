@@ -17,9 +17,10 @@ headers = {
 }
 
 uploaded_file = st.file_uploader("Choose an mp4 video file...")
-st.success("Upload Successful!")
-st.header("Processing Video")
+
 if uploaded_file is not None:
+    st.success("Upload Successful!")
+    st.header("Processing Video")
     with open("sample.mp4", "wb") as f:
         f.write(uploaded_file.getbuffer())
         video = VideoFileClip("sample.mp4")
